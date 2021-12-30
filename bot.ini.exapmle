@@ -1,0 +1,16 @@
+[tg_bot]
+token = 123456789:AAAAAAAABBBBBBBBCCCCCC
+admin_id = 432699372, 365754117, 1669510422
+use_redis = true
+redis_host = localhost
+redis_port = 6379
+redis_db = 0
+redis_password =
+redis_prefix = my_bot_fsm
+
+[db]
+user = postgres
+password = root
+database = my_bot_db
+host = 127.0.0.1
+port = 5432

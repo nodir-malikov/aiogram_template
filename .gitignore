@@ -1,0 +1,10 @@
+__pycache__/
+venv/
+tmp/
+logs/
+.env
+*.ini
+*.zip
+*.log
+.git
+.vscode

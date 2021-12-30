@@ -1,2 +1,8 @@
+autopep8
 aiogram
 aioredis
+asyncpg
+aiogram_broadcaster
+psycopg2
+loguru
+sqlalchemy
