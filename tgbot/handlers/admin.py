@@ -10,7 +10,7 @@ async def admin_start(m: Message, state: FSMContext):
 def register_admin(dp: Dispatcher):
     dp.register_message_handler(
         admin_start,
-        commands=["start"],
+        commands=["admin"],
         state="*",
         is_admin=True
     )
