@@ -36,5 +36,4 @@ Simple template for bots written on [aiogram](https://github.com/aiogram/aiogram
 * Community: https://t.me/aiogram
 * Source code: https://github.com/aiogram/aiogram
 
-**Other:**
-* Test bot: https://t.me/aiogram_template_bot
+**Test bot**: https://t.me/aiogram_template_bot
