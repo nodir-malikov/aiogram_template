@@ -27,7 +27,7 @@ Simple template for bots written on [aiogram](https://github.com/aiogram/aiogram
 * Run bot: `python bot.py`
 
 
-### Useful:
+### Useful
 
 **Aiogram**
 
