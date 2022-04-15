@@ -2,9 +2,9 @@ __pycache__/
 venv/
 tmp/
 logs/
+.git
+.vscode
 .env
 *.ini
 *.zip
 *.log
-.git
-.vscode

@@ -24,7 +24,7 @@ def rate_limit(limit: int, key=None):
 
 class ThrottlingMiddleware(BaseMiddleware):
     """
-    Simple middleware
+    Simple middleware for throttling.
     """
 
     def __init__(self, limit=DEFAULT_RATE_LIMIT, key_prefix='antiflood_'):
@@ -50,4 +50,4 @@ class ThrottlingMiddleware(BaseMiddleware):
 
     async def message_throttled(self, message: types.Message, throttled: Throttled):
         if throttled.exceeded_count <= 2:
-            await message.reply("Siz juda tez xabar jo'natayapsiz!")
+            await message.reply("You are sending messages too fast. Wait a bit.")

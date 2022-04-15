@@ -11,10 +11,11 @@ from aiogram.types.bot_command_scope import BotCommandScopeDefault
 
 from tgbot.config import load_config
 from tgbot.filters.role import AdminFilter
+from tgbot.middlewares.throtling import ThrottlingMiddleware
+from tgbot.middlewares.db import DbMiddleware
+from tgbot.services.database import create_db_session
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.user import register_user
-from tgbot.middlewares.throtling import ThrottlingMiddleware
-from tgbot.services.database import create_db_session
 
 
 os.makedirs("logs", exist_ok=True)
@@ -22,8 +23,8 @@ os.makedirs("logs", exist_ok=True)
 logger.add(
     sink="logs/bot.log",
     format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{file}:{line} {message}",
-    rotation="1 day",
-    retention="15 days",
+    rotation="30 day",
+    retention="90 days",
     compression="zip",
     backtrace=True,
     diagnose=True,
@@ -35,6 +36,7 @@ logger.add(
 
 def register_all_middlewares(dp):
     dp.setup_middleware(ThrottlingMiddleware())
+    dp.setup_middleware(DbMiddleware())
 
 
 def register_all_filters(dp):
@@ -47,30 +49,52 @@ def register_all_handlers(dp):
 
 
 async def set_bot_commands(bot: Bot):
+    """
+    Initialize bot commands for bot to preview them when typing slash "/"
+    """
+
     commands = [
         BotCommand(command="start", description="Start the bot"),
-        BotCommand(command="help", description="Need help?"),
-        BotCommand(command="admin", description="Admin panel")
+        BotCommand(command="me", description="Your info in DB"),
     ]
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
 
+async def start_polling(dp, skip_updates=False):
+    if skip_updates:
+        await dp.skip_updates()
+    await dp.start_polling()
+
+
+async def close_all(dp):
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    await dp.bot.session.close()
+
+
 async def main():
     logger.success("Starting bot")
+    # load config from bot.ini file
     config = load_config("bot.ini")
 
     if config.tg_bot.use_redis:
+        # use redis storage for FSM
         storage = RedisStorage2(host=config.tg_bot.redis_host,
                                 port=config.tg_bot.redis_port,
                                 db=config.tg_bot.redis_db,
                                 password=config.tg_bot.redis_password,
                                 prefix=config.tg_bot.redis_prefix)
     else:
+        # use memory storage for FSM
         storage = MemoryStorage()
 
+    # create bot instance
+    # default parse_mode is HTML
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
+    # create dispatcher instance with storage
     dp = Dispatcher(bot, storage=storage)
 
+    # adding config and db session to bot data
     bot['config'] = config
     bot['db'] = await create_db_session(config)
 
@@ -82,15 +106,13 @@ async def main():
 
     # start
     try:
-        await dp.start_polling()
+        await start_polling(dp, skip_updates=config.tg_bot.skip_updates)
     finally:
-        await dp.storage.close()
-        await dp.storage.wait_closed()
-        await bot.session.close()
+        await close_all(dp)
 
 
 if __name__ == '__main__':
     try:
-        asyncio.new_event_loop().run_until_complete(main())
+        asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.error("Bot stopped!")
+        logger.warning("Bot stopped!")

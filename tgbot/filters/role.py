@@ -8,6 +8,10 @@ from tgbot.config import Config
 
 
 class AdminFilter(BoundFilter):
+    """
+    Filter for checking if user is admin
+    """
+
     key = 'is_admin'
 
     def __init__(self, is_admin: typing.Optional[bool] = None):
@@ -18,7 +22,7 @@ class AdminFilter(BoundFilter):
             return True
 
         config: Config = obj.bot.get('config')
-        if str(obj.from_user.id) in config.tg_bot.admin_id:
+        if str(obj.from_user.id) in config.tg_bot.admins_id:
             return True
         else:
             logger.warning(

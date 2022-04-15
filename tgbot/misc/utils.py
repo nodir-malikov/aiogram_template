@@ -1,2 +1,9 @@
-async def make_id(id) -> str:
-    return str(int(id) + 11110)
+import re
+
+
+def onlydigits(text: str) -> str:
+    """
+    Remove all non-digits from string
+    """
+
+    return re.sub('[^\d]', '', text)

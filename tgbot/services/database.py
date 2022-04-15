@@ -1,13 +1,28 @@
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+
+from sqlalchemy_utils import database_exists, create_database
 
 from tgbot.config import Config
 from tgbot.services.db_base import Base
 
 
-async def create_db_session(config: Config):
+async def create_db_session(config: Config) -> AsyncSession:
+    """
+    Create DB session
+    """
+
+    auth_data = f"{config.db.user}:{config.db.password}" \
+        f"@{config.db.host}:{config.db.port}/{config.db.database}"
+
+    db_uri = f"postgresql://{auth_data}"
+    if not database_exists(db_uri):
+        # create database if not exists
+        create_database(db_uri)
+
+    db_uri = f"postgresql+asyncpg://{auth_data}"
     engine = create_async_engine(
-        f"postgresql+asyncpg://{config.db.user}:{config.db.password}@{config.db.host}:{config.db.port}/{config.db.database}",
+        db_uri,
         future=True
     )
     async with engine.begin() as conn:
