@@ -13,6 +13,7 @@ Simple template for bots written on [aiogram](https://github.com/aiogram/aiogram
 #### System dependencies
 
 * Python 3.9+
+* Redis (if you set `use_redis = true` in **bot.ini**)
 
 #### Preparations
 
