@@ -52,7 +52,6 @@ async def set_bot_commands(bot: Bot):
     """
     Initialize bot commands for bot to preview them when typing slash "/"
     """
-
     commands = [
         BotCommand(command="start", description="Start the bot"),
         BotCommand(command="me", description="Your info in DB"),
