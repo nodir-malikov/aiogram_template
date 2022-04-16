@@ -24,8 +24,7 @@ class AdminFilter(BoundFilter):
         config: Config = obj.bot.get('config')
         if str(obj.from_user.id) in config.tg_bot.admins_id:
             return True
-        else:
-            logger.warning(
-                f'AdminFilter -> User: {obj.from_user.id} is not admin'
-            )
-            return False
+        logger.warning(
+            f'AdminFilter -> User: {obj.from_user.id} is not admin'
+        )
+        return False
