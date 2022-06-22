@@ -1,8 +1,6 @@
 import os
 import yaml
 
-from typing import Union
-
 from pathlib import Path
 
 from loguru import logger
@@ -14,7 +12,7 @@ from tgbot.models.users import User as DbUser
 from tgbot.misc.utils import Map
 
 
-def load_translations(path: str = None) -> dict:
+def _load_translations(path: str = None) -> dict:
     if not path:
         path = os.path.join(os.getcwd(), "tgbot", "translations", "texts.yml")
 
@@ -28,18 +26,26 @@ def load_translations(path: str = None) -> dict:
 
 class TranslationMiddleware(BaseMiddleware):
     def __init__(self) -> None:
-        self.texts: dict = load_translations()
+        self.texts: dict = _load_translations()
         super().__init__()
 
-    async def on_pre_process_message(self, obj: Union[Message, CallbackQuery], data: dict) -> Map:
-        db_user: DbUser = data.get("db_user")
-        telegram_user: TgUser = obj.from_user
-        lang = telegram_user.language_code
-        if db_user:
-            if db_user.lang_code:
-                lang = db_user.lang_code
-
+    async def reload_translations(self, obj, data, code: str = None) -> Map:
+        if not code:
+            db_user: DbUser = data.get("db_user")
+            telegram_user: TgUser = obj.from_user
+            lang = telegram_user.language_code
+            if db_user:
+                if db_user.lang_code:
+                    lang = db_user.lang_code
+        else:
+            lang = code
         # `texts` is a name of var passed to handler
         texts = Map(self.texts.get(lang, {}))
-        data["texts"] = texts
+
         return texts
+
+    async def on_pre_process_message(self, obj: Message, data: dict) -> Map:
+        data["texts"] = await self.reload_translations(obj, data)
+
+    async def on_pre_process_callback_query(self, obj: CallbackQuery, data: dict) -> Map:
+        data["texts"] = await self.reload_translations(obj, data)

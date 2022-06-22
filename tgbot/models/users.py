@@ -51,13 +51,14 @@ class User(Base):
             await db_session.commit()
             return result.scalar()
 
-    async def update_user(self, db_session: sessionmaker, updated_fields: dict) -> 'User':
+
+    @classmethod
+    async def update_user(cls, db_session: sessionmaker, telegram_id: int, updated_fields: dict) -> 'User':
         """
         Update user fields
         """
         async with db_session() as db_session:
-            sql = update(User).where(User.telegram_id ==
-                                     self.telegram_id).values(**updated_fields)
+            sql = update(cls).where(cls.telegram_id == telegram_id).values(**updated_fields)
             result = await db_session.execute(sql)
             await db_session.commit()
             return result
@@ -86,4 +87,4 @@ class User(Base):
         return count
 
     def __repr__(self):
-        return f'User (ID: {self.telegram_id} - {self.fullname})'
+        return f'User (ID: {self.telegram_id} - {self.firstname} {self.lastname})'

@@ -10,7 +10,7 @@ from aiogram.types import BotCommand
 from aiogram.types.bot_command_scope import BotCommandScopeDefault
 
 from tgbot.config import load_config
-from tgbot.filters.role import AdminFilter
+from tgbot.filters import role, reply_kb
 from tgbot.middlewares.throtling import ThrottlingMiddleware
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.translate import TranslationMiddleware
@@ -45,7 +45,8 @@ def register_all_middlewares(dp):
 
 
 def register_all_filters(dp):
-    dp.filters_factory.bind(AdminFilter)
+    dp.filters_factory.bind(role.AdminFilter)
+    dp.filters_factory.bind(reply_kb.CloseBtn)
 
 
 def register_all_handlers(dp):
@@ -60,6 +61,8 @@ async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="start", description="Start the bot"),
         BotCommand(command="me", description="Your info in DB"),
+        BotCommand(command="phone", description="Add / Update phone number"),
+        BotCommand(command="lang", description="Choose language"),
     ]
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 

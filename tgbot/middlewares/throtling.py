@@ -53,5 +53,5 @@ class ThrottlingMiddleware(BaseMiddleware):
 
     async def message_throttled(self, message: types.Message, throttled: Throttled, data: dict):
         if throttled.exceeded_count <= 2:
-            texts: Map = await TranslationMiddleware().on_pre_process_message(message, data)
+            texts: Map = await TranslationMiddleware().reload_translations(message, data)
             await message.reply(texts.service.antiflood)

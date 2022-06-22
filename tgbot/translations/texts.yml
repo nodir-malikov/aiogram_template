@@ -17,6 +17,22 @@ en:
       Username: <code>{username}</code>\n\
       Phone: <code>{phone}</code>\n\
       Language code: <code>{lang_code}</code>"
+    lang: "Choose your language:"
+    lang_choosen: "Language choosen: {lang}"
+    phone: "Send your phone number by button below. 👇"
+    phone_saved: "Your phone number is saved. 👌"
+    close_reply_keyboard: "Keyboard closed."
+    kb:
+      inline:
+        languages:
+          en:
+            text: "English 🇺🇸"
+          ru:
+            text: "Русский 🇷🇺"
+
+      reply:
+        close: "Close ❌"
+        phone: "Send my phone number 📲"
 
 ru:
   service:
@@ -37,3 +53,19 @@ ru:
       Имя пользователя: <code>{username}</code>\n\
       Телефонный номер: <code>{phone}</code>\n\
       Код языка: <code>{lang_code}</code>"
+    lang: "Выберите ваш язык:"
+    lang_choosen: "Язык выбран: {lang}"
+    phone: "Отправьте свой номер телефона по кнопке ниже. 👇"
+    phone_saved: "Ваш телефонный номер сохранен. 👌"
+    close_reply_keyboard: "Клавиатура закрыта."
+    kb:
+      inline:
+        languages:
+          en:
+            text: "English 🇺🇸"
+          ru:
+            text: "Русский 🇷🇺"
+
+      reply:
+        close: "Закрыть ❌"
+        phone: "Отправить мой телефонный номер 📲"

@@ -1,11 +1,28 @@
 import re
 
+from aiogram.types import InlineKeyboardButton
 
-def onlydigits(text: str) -> str:
+
+async def onlydigits(text: str) -> str:
     """
     Remove all non-digits from string
     """
     return re.sub('[^\d]', '', text)
+
+
+async def find_button_text(buttons: list, callback_data: str) -> str:
+    """
+    Find button text by callback_data
+    """
+    for button in buttons:
+        if isinstance(button, list):
+            text = await find_button_text(button, callback_data)
+            if text:
+                return text
+        elif isinstance(button, InlineKeyboardButton):
+            if button.callback_data == callback_data:
+                return button.text
+    return ""
 
 
 class Map(dict):
