@@ -27,6 +27,7 @@ ru:
     total_users: "Всего пользователей в боте: {count}"
     broadcast_success: "Ура! Рассылка началась."
     no_broadcast_text: "Пожалуйста, отправьте команду как: <code>/broadcast привет мои юзеры!</code>"
+    broadcast_error: "❗️ Ошибка при рассылке: {err}"
   user:
     hi: "Привет, {mention}!"
     me: "<b>Ваши данные в БД:</b>\n\
