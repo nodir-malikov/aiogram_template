@@ -18,20 +18,23 @@ from tgbot.handlers.admin import register_admin
 from tgbot.handlers.user import register_user
 
 
-os.makedirs("logs", exist_ok=True)
+def init_logger():
+    os.makedirs("logs", exist_ok=True)
 
-logger.add(
-    sink="logs/bot.log",
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{file}:{line} {message}",
-    rotation="30 day",
-    retention="90 days",
-    compression="zip",
-    backtrace=True,
-    diagnose=True,
-    enqueue=True,
-    catch=True,
-    level="DEBUG",
-)
+    logger.add(
+        sink="logs/bot.log",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {name}:{file}:{line} {message}",
+        rotation="30 day",
+        retention="90 days",
+        compression="zip",
+        backtrace=True,
+        diagnose=True,
+        enqueue=True,
+        catch=True,
+        level="DEBUG",
+    )
+
+    logger.success("Logger initialized")
 
 
 def register_all_middlewares(dp):
@@ -73,6 +76,7 @@ async def close_all(dp):
 
 
 async def main():
+    init_logger()
     logger.success("Starting bot")
     # load config from bot.ini file
     config = load_config("bot.ini")
