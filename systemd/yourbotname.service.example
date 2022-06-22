@@ -1,0 +1,15 @@
+[Unit]
+Description=Description of your bot here
+After=network.target
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/home/www/code/tgbot/yourbot/.venv/bin/python bot.py
+ExecReload=/home/www/code/tgbot/yourbot/.venv/bin/python bot.py
+WorkingDirectory=/home/www/code/tgbot/yourbot
+KillMode=process
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
