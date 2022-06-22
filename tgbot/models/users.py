@@ -1,7 +1,6 @@
 from sqlalchemy import (Column, String, BigInteger,
                         insert, update, func, select)
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql.sqltypes import BigInteger
 
 from tgbot.services.db_base import Base
 
