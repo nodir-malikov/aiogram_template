@@ -24,7 +24,9 @@ async def broadcast(message: Union[str, Message], users: list):
     users = [
         {
             'chat_id': user.telegram_id,
-            'mention': await get_mention(user.telegram_id, user.firstname + user.lastname)
+            'mention': await get_mention(
+                user.telegram_id,
+                f"{user.firstname}{user.lastname if user.lastname else ''}")
         } for user in users
     ]
     try:
