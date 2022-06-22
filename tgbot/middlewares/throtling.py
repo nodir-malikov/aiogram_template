@@ -4,6 +4,9 @@ from aiogram.dispatcher.handler import CancelHandler, current_handler
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.utils.exceptions import Throttled
 
+from tgbot.middlewares.translate import TranslationMiddleware
+from tgbot.misc.utils import Map
+
 
 def rate_limit(limit: int, key=None):
     """
@@ -27,7 +30,7 @@ class ThrottlingMiddleware(BaseMiddleware):
     Simple middleware for throttling.
     """
 
-    def __init__(self, limit=DEFAULT_RATE_LIMIT, key_prefix='antiflood_'):
+    def __init__(self, limit=0.5, key_prefix='antiflood_'):
         self.rate_limit = limit
         self.prefix = key_prefix
         super(ThrottlingMiddleware, self).__init__()
@@ -45,9 +48,10 @@ class ThrottlingMiddleware(BaseMiddleware):
         try:
             await dispatcher.throttle(key, rate=limit)
         except Throttled as t:
-            await self.message_throttled(message, t)
+            await self.message_throttled(message, t, data)
             raise CancelHandler()
 
-    async def message_throttled(self, message: types.Message, throttled: Throttled):
+    async def message_throttled(self, message: types.Message, throttled: Throttled, data: dict):
         if throttled.exceeded_count <= 2:
-            await message.reply("You are sending messages too fast. Wait a bit.")
+            texts: Map = await TranslationMiddleware().on_pre_process_message(message, data)
+            await message.reply(texts.service.antiflood)

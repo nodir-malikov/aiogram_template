@@ -1,20 +1,33 @@
 en:
-  test: "Test message."
-  hi: "Hello, {mention}!"
-  me: "<b>Your data in DB:</b>\n\
-    Telegram ID: <code>{telegram_id}</code>\n\
-    First name: <code>{firstname}</code>\n\
-    Last name: <code>{lastname}</code>\n\
-    Username: <code>{username}</code>\n\
-    Phone: <code>{phone}</code>\n\
-    Language code: <code>{lang_code}</code>"
+  service:
+    test: "Test message."
+    antiflood: "You are sending messages too fast. Wait a bit."
+  admin:
+    hi: "Hello, admin!"
+    total_users: "Total users in bot: {count}"
+  user:
+    hi: "Hello, {mention}!"
+    me: "<b>Your data in DB:</b>\n\
+      Telegram ID: <code>{telegram_id}</code>\n\
+      First name: <code>{firstname}</code>\n\
+      Last name: <code>{lastname}</code>\n\
+      Username: <code>{username}</code>\n\
+      Phone: <code>{phone}</code>\n\
+      Language code: <code>{lang_code}</code>"
+
 ru:
-  test: "Тестовое соощение."
-  hi: "Привет, {mention}!"
-  me: "<b>Ваши данные в БД:</b>\n\
-    Telegram ID: <code>{telegram_id}</code>\n\
-    Имя: <code>{firstname}</code>\n\
-    Фамилия: <code>{lastname}</code>\n\
-    Имя пользователя: <code>{username}</code>\n\
-    Телефонный номер: <code>{phone}</code>\n\
-    Код языка: <code>{lang_code}</code>"
+  service:
+    test: "Тестовое соощение."
+    antiflood: "Вы слишком быстро отправляете сообщения. Подождите немного."
+  admin:
+    hi: "Привет, админ!"
+    total_users: "Всего пользователей в боте: {count}"
+  user:
+    hi: "Привет, {mention}!"
+    me: "<b>Ваши данные в БД:</b>\n\
+      Telegram ID: <code>{telegram_id}</code>\n\
+      Имя: <code>{firstname}</code>\n\
+      Фамилия: <code>{lastname}</code>\n\
+      Имя пользователя: <code>{username}</code>\n\
+      Телефонный номер: <code>{phone}</code>\n\
+      Код языка: <code>{lang_code}</code>"

@@ -11,10 +11,10 @@ from aiogram.types import Message, CallbackQuery, User as TgUser
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
 from tgbot.models.users import User as DbUser
-from tgbot.misc.utils import dotdict
+from tgbot.misc.utils import Map
 
 
-def load_translations(path: str = None):
+def load_translations(path: str = None) -> dict:
     if not path:
         path = os.path.join(os.getcwd(), "tgbot", "translations", "texts.yml")
 
@@ -28,10 +28,10 @@ def load_translations(path: str = None):
 
 class TranslationMiddleware(BaseMiddleware):
     def __init__(self) -> None:
-        self.texts = load_translations()
+        self.texts: dict = load_translations()
         super().__init__()
 
-    async def on_pre_process_message(self, obj: Union[Message, CallbackQuery], data: dict):
+    async def on_pre_process_message(self, obj: Union[Message, CallbackQuery], data: dict) -> Map:
         db_user: DbUser = data.get("db_user")
         telegram_user: TgUser = obj.from_user
         lang = telegram_user.language_code
@@ -40,4 +40,6 @@ class TranslationMiddleware(BaseMiddleware):
                 lang = db_user.lang_code
 
         # `texts` is a name of var passed to handler
-        data["texts"] = dotdict(self.texts.get(lang, {}))
+        texts = Map(self.texts.get(lang, {}))
+        data["texts"] = texts
+        return texts
