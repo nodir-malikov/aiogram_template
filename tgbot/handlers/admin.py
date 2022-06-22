@@ -28,7 +28,7 @@ async def admin_broadcast(m: Message, db_session: AsyncSession, texts: Map):
         await m.reply(texts.admin.broadcast_success)
     except Exception as e:
         await m.reply(texts.admin.broadcast_error.format(err=e))
-        logger.error(f"Error while broadcasting!")
+        logger.error("Error while broadcasting!")
         raise e
 
 
