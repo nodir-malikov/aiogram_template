@@ -1,5 +1,5 @@
-import asyncio
 import os
+import asyncio
 
 from loguru import logger
 
@@ -13,6 +13,7 @@ from tgbot.config import load_config
 from tgbot.filters.role import AdminFilter
 from tgbot.middlewares.throtling import ThrottlingMiddleware
 from tgbot.middlewares.db import DbMiddleware
+from tgbot.middlewares.translate import TranslationMiddleware
 from tgbot.services.database import create_db_session
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.user import register_user
@@ -40,6 +41,7 @@ def init_logger():
 def register_all_middlewares(dp):
     dp.setup_middleware(ThrottlingMiddleware())
     dp.setup_middleware(DbMiddleware())
+    dp.setup_middleware(TranslationMiddleware())
 
 
 def register_all_filters(dp):
