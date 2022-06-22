@@ -15,32 +15,11 @@ from tgbot.misc.utils import dotdict
 
 
 def load_translations(path: str = None):
-    translations = {}
     if not path:
-        path = os.path.join(os.getcwd(), "tgbot", "translations")
+        path = os.path.join(os.getcwd(), "tgbot", "translations", "texts.yml")
 
-    if not os.path.exists(path):
-        logger.error("Path doesn't exists!")
-        return translations
-
-    if not os.path.isdir(path):
-        logger.error("Path must be dir!")
-        return translations
     try:
-        yml_count = 0
-        for file in os.listdir(path):
-            name = '.'.join(str(file).split('.')[0:-1])
-            extension = str(file).split('.')[-1]
-            if extension in ("yml", "yaml"):
-                yml_count += 1
-                translations[name] = \
-                    yaml.safe_load(Path(os.path.join(path, file)
-                                        ).read_text(encoding='utf-8'))
-
-        if yml_count == 0:
-            logger.warning(f"No translation files found in: {path}")
-
-        return translations
+        return yaml.safe_load(Path(os.path.join(path)).read_text(encoding='utf-8'))
 
     except Exception as e:
         logger.error(f"Error while parsing translations in YAML file: {path}")
@@ -61,4 +40,4 @@ class TranslationMiddleware(BaseMiddleware):
                 lang = db_user.lang_code
 
         # `texts` is a name of var passed to handler
-        data["texts"] = dotdict(self.texts['texts'].get(lang, {}))
+        data["texts"] = dotdict(self.texts.get(lang, {}))
