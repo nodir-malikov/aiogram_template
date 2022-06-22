@@ -2,12 +2,16 @@ import os
 import yaml
 
 from typing import Union
+
 from pathlib import Path
+
 from loguru import logger
+
 from aiogram.types import Message, CallbackQuery, User as TgUser
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
 from tgbot.models.users import User as DbUser
+from tgbot.misc.utils import dotdict
 
 
 def load_translations(path: str = None):
@@ -57,4 +61,4 @@ class TranslationMiddleware(BaseMiddleware):
                 lang = db_user.lang_code
 
         # `texts` is a name of var passed to handler
-        data["texts"] = self.texts['texts'].get(lang, {})
+        data["texts"] = dotdict(self.texts['texts'].get(lang, {}))
