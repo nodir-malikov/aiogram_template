@@ -11,7 +11,6 @@ async def create_db_session(config: Config) -> AsyncSession:
     """
     Create DB session
     """
-
     auth_data = f"{config.db.user}:{config.db.password}" \
         f"@{config.db.host}:{config.db.port}/{config.db.database}"
 

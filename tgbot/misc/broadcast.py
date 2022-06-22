@@ -18,7 +18,6 @@ async def broadcast(message: dict, users: list):
     message: dict of aiogram.types.Message object which converted to dict via `to_python()` method
     users: list of tgbot.models.users.User object
     """
-
     msg = Message
     msg = msg.to_object(message)
     logger.success(f'{len(users)} users found for broadcast')
@@ -44,5 +43,4 @@ async def _start_broadcast(message: Message, users: list):
     1 sec / 0.034 sec = 29,4 users per second
     https://core.telegram.org/bots/faq#broadcasting-to-users
     """
-
     await MessageBroadcaster(chats=users, message=message, timeout=0.034).run()
