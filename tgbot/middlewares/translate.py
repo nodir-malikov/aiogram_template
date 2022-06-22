@@ -34,9 +34,8 @@ class TranslationMiddleware(BaseMiddleware):
             db_user: DbUser = data.get("db_user")
             telegram_user: TgUser = obj.from_user
             lang = telegram_user.language_code
-            if db_user:
-                if db_user.lang_code:
-                    lang = db_user.lang_code
+            if db_user and db_user.lang_code:
+                lang = db_user.lang_code
         else:
             lang = code
         # `texts` is a name of var passed to handler

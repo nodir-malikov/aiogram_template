@@ -19,9 +19,11 @@ async def find_button_text(buttons: list, callback_data: str) -> str:
             text = await find_button_text(button, callback_data)
             if text:
                 return text
-        elif isinstance(button, InlineKeyboardButton):
-            if button.callback_data == callback_data:
-                return button.text
+        elif (
+            isinstance(button, InlineKeyboardButton)
+            and button.callback_data == callback_data
+        ):
+            return button.text
     return ""
 
 
