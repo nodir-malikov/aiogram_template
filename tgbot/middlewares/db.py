@@ -5,9 +5,7 @@ from tgbot.models.users import User
 
 
 class DbMiddleware(LifetimeControllerMiddleware):
-    """
-    Middleware for adding user into DB if he/she not exists
-    """
+    """Middleware for adding user into DB if he/she not exists"""
 
     skip_patterns = ["error", "update"]
 

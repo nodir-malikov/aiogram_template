@@ -26,9 +26,7 @@ def rate_limit(limit: int, key=None):
 
 
 class ThrottlingMiddleware(BaseMiddleware):
-    """
-    Simple middleware for throttling.
-    """
+    """Simple middleware for throttling."""
 
     def __init__(self, limit=0.5, key_prefix='antiflood_'):
         self.rate_limit = limit

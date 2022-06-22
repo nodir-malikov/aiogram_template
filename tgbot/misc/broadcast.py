@@ -8,9 +8,7 @@ from aiogram_broadcaster import MessageBroadcaster, TextBroadcaster
 
 
 async def get_mention(chat_id, full_name):
-    """
-    Get mention for user
-    """
+    """Get mention for user"""
     return md.hlink(full_name, f'tg://user?id={chat_id}')
 
 

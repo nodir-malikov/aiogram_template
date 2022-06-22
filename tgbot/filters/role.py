@@ -8,9 +8,7 @@ from tgbot.config import Config
 
 
 class AdminFilter(BoundFilter):
-    """
-    Filter for checking if user is admin
-    """
+    """Filter for checking if user is admin"""
 
     key = 'is_admin'
 
