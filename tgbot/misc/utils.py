@@ -4,16 +4,12 @@ from aiogram.types import InlineKeyboardButton
 
 
 async def onlydigits(text: str) -> str:
-    """
-    Remove all non-digits from string
-    """
+    """Remove all non-digits from string"""
     return re.sub('[^\d]', '', text)
 
 
 async def find_button_text(buttons: list, callback_data: str) -> str:
-    """
-    Find button text by callback_data
-    """
+    """Find button text by callback_data"""
     for button in buttons:
         if isinstance(button, list):
             text = await find_button_text(button, callback_data)
@@ -26,9 +22,7 @@ async def find_button_text(buttons: list, callback_data: str) -> str:
 
 
 class Map(dict):
-    """
-    Adds the ability to select dict elements using a dot
-    """
+    """Adds the ability to select dict elements using a dot"""
 
     def __init__(self, *args, **kwargs):
         super(Map, self).__init__(*args, **kwargs)
