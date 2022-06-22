@@ -1,7 +1,5 @@
 # aiogram_template
 
-### [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/downloads/)  [![Aiogram](https://img.shields.io/badge/aiogram-2.19-blue)](https://pypi.org/project/aiogram/) 
-
 ### About
 
 Inspired by [Tishka17&#39;s tgbot_template](https://github.com/Tishka17/tgbot_template) and customized with some useful things.
@@ -18,15 +16,30 @@ Simple template for bots written on [aiogram](https://github.com/aiogram/aiogram
 #### Preparations
 
 * Clone this repo via `https://github.com/nodir-malikov/aiogram_template.git`
+
+Without Poetry:
+
 * Create virtual environment: `python -m venv venv`
 * Make **venv** your source: `source ./venv/bin/activate` (Linux) or `.\venv\Scripts\activate (Windows)`
+* Install requirements: `pip install -r requirements.txt`
+
+With Poetry:
+
+* Just run `poetry install` (if you haven't installed poetry yet, you can find instructions **[here](https://python-poetry.org/docs/)**)
 
 ### Deployment
 
-* Install requirements: `pip install -r requirements.txt`
 * Copy **bot.ini.example** to **bot.ini** and set your variables.
+
+Without Systemd:
+
 * Run bot: `python bot.py`
 
+With Systemd:
+
+* Copy systemd config to systemd system folder by: `sudo cp systemd/yourbotname.service.example /etc/systemd/system/mynewbot.service` "mynewbot" - you can change to any name.
+* Reload systemd daemon with: `sudo systemctl daemon-reload`
+* Start your bot service with: `sudo systemctl start mynewbot.service`
 
 ### Useful
 
