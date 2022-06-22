@@ -7,7 +7,7 @@ async def onlydigits(text: str) -> str:
     """
     Remove all non-digits from string
     """
-    return re.sub('[^\d]', '', text)
+    return re.sub(r'[^\d]', '', text)
 
 
 async def find_button_text(buttons: list, callback_data: str) -> str:
