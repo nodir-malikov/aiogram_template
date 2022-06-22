@@ -1,8 +1,10 @@
+from typing import Union
+
 from loguru import logger
 
 from aiogram import md
 from aiogram.types import Message
-from aiogram_broadcaster import MessageBroadcaster
+from aiogram_broadcaster import MessageBroadcaster, TextBroadcaster
 
 
 async def get_mention(chat_id, full_name):
@@ -12,29 +14,27 @@ async def get_mention(chat_id, full_name):
     return md.hlink(full_name, f'tg://user?id={chat_id}')
 
 
-async def broadcast(message: dict, users: list):
+async def broadcast(message: Union[str, Message], users: list):
     """Broadcast message to users
 
     message: dict of aiogram.types.Message object which converted to dict via `to_python()` method
     users: list of tgbot.models.users.User object
     """
-    msg = Message
-    msg = msg.to_object(message)
     logger.success(f'{len(users)} users found for broadcast')
     users = [
         {
             'chat_id': user.telegram_id,
-            'mention': await get_mention(user.telegram_id, user.fullname)
+            'mention': await get_mention(user.telegram_id, user.firstname + user.lastname)
         } for user in users
     ]
     try:
-        await _start_broadcast(msg, users)
+        await _start_broadcast(message, users)
     except Exception as e:
         logger.error(f"Error while broadcasting: {e}")
         raise e
 
 
-async def _start_broadcast(message: Message, users: list):
+async def _start_broadcast(message: Union[str, Message], users: list) -> None:
     """Private method for starting broadcast
 
     The API will not allow bulk notifications to more than ~30 users per second,
@@ -43,4 +43,10 @@ async def _start_broadcast(message: Message, users: list):
     1 sec / 0.034 sec = 29,4 users per second
     https://core.telegram.org/bots/faq#broadcasting-to-users
     """
-    await MessageBroadcaster(chats=users, message=message, timeout=0.034).run()
+    if isinstance(message, Message):
+        await MessageBroadcaster(chats=users, message=message, timeout=0.034).run()
+        return
+
+    if isinstance(message, str):
+        await TextBroadcaster(chats=users, text=message, timeout=0.034).run()
+        return

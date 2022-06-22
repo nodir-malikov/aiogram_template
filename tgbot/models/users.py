@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String, BigInteger, insert, update, func
-from sqlalchemy import select
+from sqlalchemy import (Column, String, BigInteger,
+                        insert, update, func, select)
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql.sqltypes import BigInteger
 
@@ -68,11 +68,8 @@ class User(Base):
         Returns all users from DB
         """
         async with db_session() as db_session:
-            sql = select(cls.id, cls.telegram_id,
-                         cls.fullname, cls.username, cls.phone,
-                         cls.follow_status, cls.status).order_by(
-                User.id.asc()
-            )
+            # select all columns from table
+            sql = select(*cls.__table__.columns).order_by(cls.id)
             result = await db_session.execute(sql)
             users: list = result.fetchall()
         return users
