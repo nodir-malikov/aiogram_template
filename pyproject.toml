@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "aiogram_template"
+version = "0.1.0"
+description = "Aiogram template for telegram bots"
+authors = ["Nodir Malikov <nodirmalikov2004@yandex.ru>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = "^2.21"
+SQLAlchemy = "^1.4.37"
+SQLAlchemy-Utils = "^0.38.2"
+aiogram-broadcaster = "^0.0.7"
+loguru = "^0.6.0"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

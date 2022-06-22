@@ -5,6 +5,7 @@ logs/
 .git
 .vscode
 .env
+.venv
 *.ini
 *.zip
 *.log
