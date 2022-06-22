@@ -37,7 +37,8 @@ Without Systemd:
 
 With Systemd:
 
-* Copy systemd config to systemd system folder by: `sudo cp systemd/yourbotname.service.example /etc/systemd/system/mynewbot.service` "mynewbot" - you can change to any name.
+* Copy systemd config to systemd system folder with: `sudo cp systemd/yourbotname.service.example /etc/systemd/system/mynewbot.service` "mynewbot" - you can change to any name.
+* Open config and reconfigure with your parameters: `sudo nano /etc/systemd/system/mynewbot.service`
 * Reload systemd daemon with: `sudo systemctl daemon-reload`
 * Start your bot service with: `sudo systemctl start mynewbot.service`
 
