@@ -9,17 +9,21 @@ from tgbot.misc.utils import Map
 
 
 async def admin_start(m: Message, texts: Map):
+    """Admin start command handler"""
     await m.reply(texts.admin.hi)
 
 
 async def admin_stats(m: Message, db_session: AsyncSession, texts: Map):
+    """Admin stats command handler"""
     count = await User.users_count(db_session)
     await m.reply(texts.admin.total_users.format(count=count))
 
 
 async def admin_broadcast(m: Message, db_session: AsyncSession, texts: Map):
+    """Admin broadcast command handler"""
     broadcast_text = m.text.replace("/broadcast", "")
     if not broadcast_text:
+        # there must be some text after command for broadcasting
         await m.reply(texts.admin.no_broadcast_text)
         return
     users = await User.get_all_users(db_session)

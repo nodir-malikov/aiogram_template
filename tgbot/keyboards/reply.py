@@ -4,6 +4,7 @@ from tgbot.misc.utils import Map
 
 
 async def phone_number(texts: Map):
+    """Phone number inline keyboard"""
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text=texts.user.kb.reply.phone,

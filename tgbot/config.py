@@ -36,6 +36,7 @@ def cast_str_list(value: str) -> list:
 
 
 def load_config(path: str):
+    """Loads config from file"""
     config = configparser.ConfigParser()
     config.read(path)
 

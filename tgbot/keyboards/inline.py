@@ -7,6 +7,8 @@ cd_choose_lang = CallbackData("choosen_language", "lang_code")
 
 
 async def choose_language(texts: Map):
+    """Choose language inline keyboard"""
+    # get languages from translation texts
     langs: Map = texts.user.kb.inline.languages
     keyboard = []
     for k, v in langs.items():

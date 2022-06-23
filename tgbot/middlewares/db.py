@@ -5,13 +5,12 @@ from tgbot.models.users import User
 
 
 class DbMiddleware(LifetimeControllerMiddleware):
-    """
-    Middleware for adding user into DB if he/she not exists
-    """
+    """Middleware for adding user into DB if he/she not exists"""
 
     skip_patterns = ["error", "update"]
 
     async def pre_process(self, obj, data, *args):
+        # If user not exists in DB, add him/her
         db_session = obj.bot.get('db')
         telegram_user: types.User = obj.from_user
         user = await User.get_user(db_session=db_session, telegram_id=telegram_user.id)

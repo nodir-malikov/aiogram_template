@@ -13,6 +13,7 @@ from tgbot.misc.utils import Map
 
 
 def _load_translations(path: str = None) -> dict:
+    """Loads translations from yaml file"""
     if not path:
         path = os.path.join(os.getcwd(), "tgbot", "translations", "texts.yml")
 
@@ -30,6 +31,7 @@ class TranslationMiddleware(BaseMiddleware):
         super().__init__()
 
     async def reload_translations(self, obj, data, code: str = None) -> Map:
+        """Reloads translations memory with other language code"""
         if not code:
             db_user: DbUser = data.get("db_user")
             telegram_user: TgUser = obj.from_user

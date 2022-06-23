@@ -8,9 +8,7 @@ from tgbot.config import Config
 
 
 class AdminFilter(BoundFilter):
-    """
-    Filter for checking if user is admin
-    """
+    """Filter for checking if user is admin"""
 
     key = 'is_admin'
 
@@ -21,6 +19,7 @@ class AdminFilter(BoundFilter):
         if self.is_admin is None:
             return True
 
+        # Getting admins ids from config
         config: Config = obj.bot.get('config')
         if str(obj.from_user.id) in config.tg_bot.admins_id:
             return True

@@ -6,6 +6,7 @@ from tgbot.services.db_base import Base
 
 
 class User(Base):
+    """Telegram user model"""
     __tablename__ = "telegram_users"
     id = Column(BigInteger, primary_key=True)
     telegram_id = Column(BigInteger, unique=True)
@@ -17,9 +18,7 @@ class User(Base):
 
     @classmethod
     async def get_user(cls, db_session: sessionmaker, telegram_id: int) -> 'User':
-        """
-        Get user by telegram_id
-        """
+        """Get user by telegram_id"""
         async with db_session() as db_session:
             sql = select(cls).where(cls.telegram_id == telegram_id)
             request = await db_session.execute(sql)
@@ -36,9 +35,7 @@ class User(Base):
                        phone: str = None,
                        lang_code: str = None,
                        ) -> 'User':
-        """
-        Add new user into DB
-        """
+        """Add new user into DB"""
         async with db_session() as db_session:
             sql = insert(cls).values(telegram_id=telegram_id,
                                      firstname=firstname,
@@ -53,9 +50,7 @@ class User(Base):
 
     @classmethod
     async def update_user(cls, db_session: sessionmaker, telegram_id: int, updated_fields: dict) -> 'User':
-        """
-        Update user fields
-        """
+        """Update user fields"""
         async with db_session() as db_session:
             sql = update(cls).where(cls.telegram_id == telegram_id).values(**updated_fields)
             result = await db_session.execute(sql)
@@ -64,9 +59,7 @@ class User(Base):
 
     @classmethod
     async def get_all_users(cls, db_session: sessionmaker) -> list:
-        """
-        Returns all users from DB
-        """
+        """Returns all users from DB"""
         async with db_session() as db_session:
             # select all columns from table
             sql = select(*cls.__table__.columns).order_by(cls.id)
@@ -76,9 +69,7 @@ class User(Base):
 
     @classmethod
     async def users_count(cls, db_session: sessionmaker) -> int:
-        """
-        Counts all users in the database
-        """
+        """Counts all users in the database"""
         async with db_session() as db_session:
             sql = select([func.count(cls.id)]).select_from(cls)
             request = await db_session.execute(sql)

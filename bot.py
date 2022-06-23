@@ -20,6 +20,7 @@ from tgbot.handlers.user import register_user
 
 
 def init_logger():
+    """Logger initializer"""
     os.makedirs("logs", exist_ok=True)
 
     logger.add(
@@ -39,25 +40,26 @@ def init_logger():
 
 
 def register_all_middlewares(dp):
+    """Register all middlewares"""
     dp.setup_middleware(ThrottlingMiddleware())
     dp.setup_middleware(DbMiddleware())
     dp.setup_middleware(TranslationMiddleware())
 
 
 def register_all_filters(dp):
+    """Register all filters"""
     dp.filters_factory.bind(role.AdminFilter)
     dp.filters_factory.bind(reply_kb.CloseBtn)
 
 
 def register_all_handlers(dp):
+    """Register all handlers"""
     register_admin(dp)
     register_user(dp)
 
 
 async def set_bot_commands(bot: Bot):
-    """
-    Initialize bot commands for bot to preview them when typing slash "/"
-    """
+    """Initialize bot commands for bot to preview them when typing slash \"/\""""
     commands = [
         BotCommand(command="start", description="Start the bot"),
         BotCommand(command="me", description="Your info in DB"),
@@ -68,18 +70,21 @@ async def set_bot_commands(bot: Bot):
 
 
 async def start_polling(dp, skip_updates=False):
+    """Bot polling starter"""
     if skip_updates:
         await dp.skip_updates()
     await dp.start_polling()
 
 
 async def close_all(dp):
+    """Close all connections"""
     await dp.storage.close()
     await dp.storage.wait_closed()
     await dp.bot.session.close()
 
 
 async def main():
+    """Main function"""
     init_logger()
     logger.success("Starting bot")
     # load config from bot.ini file
