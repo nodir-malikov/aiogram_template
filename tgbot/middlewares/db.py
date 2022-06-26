@@ -1,7 +1,7 @@
 from aiogram import types
 from aiogram.dispatcher.middlewares import LifetimeControllerMiddleware
 
-from tgbot.models.users import User
+from tgbot.models.models import TGUser
 
 
 class DbMiddleware(LifetimeControllerMiddleware):
@@ -13,9 +13,9 @@ class DbMiddleware(LifetimeControllerMiddleware):
         # If user not exists in DB, add him/her
         db_session = obj.bot.get('db')
         telegram_user: types.User = obj.from_user
-        user = await User.get_user(db_session=db_session, telegram_id=telegram_user.id)
+        user = await TGUser.get_user(db_session=db_session, telegram_id=telegram_user.id)
         if not user:
-            await User.add_user(
+            await TGUser.add_user(
                 db_session=db_session,
                 telegram_id=telegram_user.id,
                 firstname=telegram_user.first_name,

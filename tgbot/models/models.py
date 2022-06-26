@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from tgbot.services.db_base import Base
 
 
-class User(Base):
+class TGUser(Base):
     """Telegram user model"""
     __tablename__ = "telegram_users"
     id = Column(BigInteger, primary_key=True)
@@ -17,7 +17,7 @@ class User(Base):
     lang_code = Column(String(length=10), default='en')
 
     @classmethod
-    async def get_user(cls, db_session: sessionmaker, telegram_id: int) -> 'User':
+    async def get_user(cls, db_session: sessionmaker, telegram_id: int) -> 'TGUser':
         """Get user by telegram_id"""
         async with db_session() as db_session:
             sql = select(cls).where(cls.telegram_id == telegram_id)
@@ -34,7 +34,7 @@ class User(Base):
                        username: str = None,
                        phone: str = None,
                        lang_code: str = None,
-                       ) -> 'User':
+                       ) -> 'TGUser':
         """Add new user into DB"""
         async with db_session() as db_session:
             sql = insert(cls).values(telegram_id=telegram_id,
@@ -49,7 +49,7 @@ class User(Base):
 
 
     @classmethod
-    async def update_user(cls, db_session: sessionmaker, telegram_id: int, updated_fields: dict) -> 'User':
+    async def update_user(cls, db_session: sessionmaker, telegram_id: int, updated_fields: dict) -> 'TGUser':
         """Update user fields"""
         async with db_session() as db_session:
             sql = update(cls).where(cls.telegram_id == telegram_id).values(**updated_fields)

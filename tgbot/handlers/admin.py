@@ -3,7 +3,7 @@ from aiogram.types import Message
 from loguru import logger
 
 from tgbot.services.database import AsyncSession
-from tgbot.models.users import User
+from tgbot.models.models import TGUser
 from tgbot.misc.broadcast import broadcast
 from tgbot.misc.utils import Map
 
@@ -15,7 +15,7 @@ async def admin_start(m: Message, texts: Map):
 
 async def admin_stats(m: Message, db_session: AsyncSession, texts: Map):
     """Admin stats command handler"""
-    count = await User.users_count(db_session)
+    count = await TGUser.users_count(db_session)
     await m.reply(texts.admin.total_users.format(count=count))
 
 
@@ -26,7 +26,7 @@ async def admin_broadcast(m: Message, db_session: AsyncSession, texts: Map):
         # there must be some text after command for broadcasting
         await m.reply(texts.admin.no_broadcast_text)
         return
-    users = await User.get_all_users(db_session)
+    users = await TGUser.get_all_users(db_session)
     try:
         await broadcast(broadcast_text, users)
         await m.reply(texts.admin.broadcast_success)

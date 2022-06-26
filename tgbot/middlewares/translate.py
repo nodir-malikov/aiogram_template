@@ -8,7 +8,7 @@ from loguru import logger
 from aiogram.types import Message, CallbackQuery, User as TgUser
 from aiogram.dispatcher.middlewares import BaseMiddleware
 
-from tgbot.models.users import User as DbUser
+from tgbot.models.models import TGUser as DbTGUser
 from tgbot.misc.utils import Map
 
 
@@ -33,7 +33,7 @@ class TranslationMiddleware(BaseMiddleware):
     async def reload_translations(self, obj, data, code: str = None) -> Map:
         """Reloads translations memory with other language code"""
         if not code:
-            db_user: DbUser = data.get("db_user")
+            db_user: DbTGUser = data.get("db_user")
             telegram_user: TgUser = obj.from_user
             lang = telegram_user.language_code
             if db_user and db_user.lang_code:

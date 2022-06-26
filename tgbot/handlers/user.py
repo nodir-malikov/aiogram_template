@@ -8,7 +8,7 @@ from loguru import logger
 from tgbot.keyboards.inline import choose_language, cd_choose_lang
 from tgbot.keyboards.reply import phone_number
 from tgbot.middlewares.translate import TranslationMiddleware
-from tgbot.models.users import User
+from tgbot.models.models import TGUser
 from tgbot.misc.utils import Map, find_button_text
 from tgbot.services.database import AsyncSession
 
@@ -18,7 +18,7 @@ async def user_start(m: Message, texts: Map):
     await m.reply(texts.user.hi.format(mention=m.from_user.get_mention()))
 
 
-async def user_me(m: Message, db_user: User, texts: Map):
+async def user_me(m: Message, db_user: TGUser, texts: Map):
     """User me command handler"""
     await m.reply(texts.user.me.format(
         telegram_id=db_user.telegram_id,
@@ -39,7 +39,7 @@ async def user_phone(m: Message, texts: Map):
     await m.reply(texts.user.phone, reply_markup=await phone_number(texts))
 
 
-async def user_phone_sent(m: Message, texts: Map, db_user: User, db_session: AsyncSession):
+async def user_phone_sent(m: Message, texts: Map, db_user: TGUser, db_session: AsyncSession):
     """User contact phone receiver handler"""
     number = m.contact.phone_number
 
@@ -48,7 +48,7 @@ async def user_phone_sent(m: Message, texts: Map, db_user: User, db_session: Asy
         number = '+' + number
 
     # updating user's phone number
-    await User.update_user(db_session,
+    await TGUser.update_user(db_session,
                            telegram_id=db_user.telegram_id,
                            updated_fields={'phone': number})
     await m.reply(texts.user.phone_saved, reply_markup=ReplyKeyboardRemove())
@@ -60,10 +60,10 @@ async def user_lang(m: Message, texts: Map):
 
 
 async def user_lang_choosen(cb: CallbackQuery, callback_data: dict,
-                            texts: Map, db_user: User, db_session: AsyncSession):
+                            texts: Map, db_user: TGUser, db_session: AsyncSession):
     """User lang choosen handler"""
     code = callback_data.get('lang_code')
-    await User.update_user(db_session,
+    await TGUser.update_user(db_session,
                            telegram_id=db_user.telegram_id,
                            updated_fields={'lang_code': code})
 
