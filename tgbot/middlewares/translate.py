@@ -32,6 +32,7 @@ class TranslationMiddleware(BaseMiddleware):
 
     async def reload_translations(self, obj, data, code: str = None) -> Map:
         """Reloads translations memory with other language code"""
+        available_langs = self.texts.get('available_langs', [])
         if not code:
             db_user: DbTGUser = data.get("db_user")
             telegram_user: TgUser = obj.from_user
@@ -40,12 +41,13 @@ class TranslationMiddleware(BaseMiddleware):
                 lang = db_user.lang_code
         else:
             lang = code
-        # `texts` is a name of var passed to handler
-        texts = Map(self.texts.get(lang, {}))
+        if lang not in available_langs:
+            lang = available_langs[0]
 
-        return texts
+        return Map(self.texts.get(lang, {}))
 
     async def on_pre_process_message(self, obj: Message, data: dict) -> Map:
+        # `texts` is a name of var passed to handler
         data["texts"] = await self.reload_translations(obj, data)
 
     async def on_pre_process_callback_query(self, obj: CallbackQuery, data: dict) -> Map:

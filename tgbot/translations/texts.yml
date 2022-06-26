@@ -1,3 +1,5 @@
+available_langs: ['en', 'ru']
+
 en:
   service:
     test: "Test message."
