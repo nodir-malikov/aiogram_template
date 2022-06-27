@@ -49,10 +49,10 @@ class TranslationMiddleware(BaseMiddleware):
     async def on_pre_process_message(self, obj: Message, data: dict) -> Map:
         # `texts` is a name of var passed to handler
         # root
-        data["texts_original"] = self.texts
+        data["texts_original"] = Map(self.texts)
         # only with choosen language
         data["texts"] = await self.reload_translations(obj, data)
 
     async def on_pre_process_callback_query(self, obj: CallbackQuery, data: dict) -> Map:
-        data["texts_original"] = self.texts
+        data["texts_original"] = Map(self.texts)
         data["texts"] = await self.reload_translations(obj, data)
