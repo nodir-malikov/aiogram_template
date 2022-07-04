@@ -1,4 +1,10 @@
-available_langs: ['en', 'ru']
+available_langs: ["en", "ru"]
+
+languages: &languages
+  en:
+    text: "English 🇺🇸"
+  ru:
+    text: "Русский 🇷🇺"
 
 en:
   service:
@@ -26,11 +32,7 @@ en:
     close_reply_keyboard: "Keyboard closed."
     kb:
       inline:
-        languages:
-          en:
-            text: "English 🇺🇸"
-          ru:
-            text: "Русский 🇷🇺"
+        languages: *languages
 
       reply:
         close: "Close ❌"
@@ -62,11 +64,7 @@ ru:
     close_reply_keyboard: "Клавиатура закрыта."
     kb:
       inline:
-        languages:
-          en:
-            text: "English 🇺🇸"
-          ru:
-            text: "Русский 🇷🇺"
+        languages: *languages
 
       reply:
         close: "Закрыть ❌"
