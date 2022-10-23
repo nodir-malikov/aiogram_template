@@ -13,7 +13,8 @@ en:
   admin:
     hi: "Hello, admin!"
     total_users: "Total users in bot: {count}"
-    broadcast_success: "Wow! Broadcasting started."
+    broadcast_started: "Wow! Broadcasting started."
+    broadcast_ended: "Cool! Broadcasting ended."
     no_broadcast_text: "Please, send command like: <code>/broadcast hello my users!</code>"
     broadcast_error: "❗️ Error while broadcasting: {err}"
   user:

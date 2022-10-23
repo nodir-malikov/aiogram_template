@@ -22,7 +22,7 @@ def _load_translations(path: str = None) -> dict:
 
     except Exception as e:
         logger.error(f"Error while parsing translations in YAML file: {path}")
-        raise e
+        logger.exception(e)
 
 
 class TranslationMiddleware(BaseMiddleware):

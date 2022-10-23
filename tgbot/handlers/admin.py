@@ -10,17 +10,20 @@ from tgbot.misc.utils import Map
 
 async def admin_start(m: Message, texts: Map):
     """Admin start command handler"""
+    logger.info(f'Admin {m.from_user.id} opened admin panel')
     await m.reply(texts.admin.hi)
 
 
 async def admin_stats(m: Message, db_session: AsyncSession, texts: Map):
     """Admin stats command handler"""
+    logger.info(f'Admin {m.from_user.id} requested stats')
     count = await TGUser.users_count(db_session)
     await m.reply(texts.admin.total_users.format(count=count))
 
 
 async def admin_broadcast(m: Message, db_session: AsyncSession, texts: Map):
     """Admin broadcast command handler"""
+    logger.info(f'Admin {m.from_user.id} requested broadcast')
     broadcast_text = m.text.replace("/broadcast", "")
     if not broadcast_text:
         # there must be some text after command for broadcasting
@@ -28,12 +31,15 @@ async def admin_broadcast(m: Message, db_session: AsyncSession, texts: Map):
         return
     users = await TGUser.get_all_users(db_session)
     try:
+        await m.reply(texts.admin.broadcast_started)
+        logger.success(f'Broadcast started.')
         await broadcast(broadcast_text, users)
-        await m.reply(texts.admin.broadcast_success)
+        logger.success(f'Broadcast finished.')
+        await m.reply(texts.admin.broadcast_ended)
     except Exception as e:
         await m.reply(texts.admin.broadcast_error.format(err=e))
         logger.error("Error while broadcasting!")
-        raise e
+        logger.exception(e)
 
 
 def register_admin(dp: Dispatcher):

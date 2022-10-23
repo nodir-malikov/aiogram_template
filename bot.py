@@ -1,12 +1,12 @@
 import os
-import asyncio
 
 from loguru import logger
 
 from aiogram import Bot, Dispatcher
+from aiogram.types import BotCommand
+from aiogram.utils.executor import start_webhook, start_polling
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
-from aiogram.types import BotCommand
 from aiogram.types.bot_command_scope import BotCommandScopeDefault
 
 from tgbot.config import load_config
@@ -17,6 +17,15 @@ from tgbot.middlewares.translate import TranslationMiddleware
 from tgbot.services.database import create_db_session
 from tgbot.handlers.admin import register_admin
 from tgbot.handlers.user import register_user
+
+
+# load config from bot.ini file
+config = load_config("bot.ini")
+
+# create bot instance
+bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
+# create dispatcher
+dp = Dispatcher(bot)
 
 
 def init_logger():
@@ -39,20 +48,20 @@ def init_logger():
     logger.success("Logger initialized")
 
 
-def register_all_middlewares(dp):
+def register_all_middlewares(dp: Dispatcher):
     """Register all middlewares"""
     dp.setup_middleware(ThrottlingMiddleware())
     dp.setup_middleware(DbMiddleware())
     dp.setup_middleware(TranslationMiddleware())
 
 
-def register_all_filters(dp):
+def register_all_filters(dp: Dispatcher):
     """Register all filters"""
     dp.filters_factory.bind(role.AdminFilter)
     dp.filters_factory.bind(reply_kb.CloseBtn)
 
 
-def register_all_handlers(dp):
+def register_all_handlers(dp: Dispatcher):
     """Register all handlers"""
     register_admin(dp)
     register_user(dp)
@@ -69,26 +78,10 @@ async def set_bot_commands(bot: Bot):
     await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
 
 
-async def start_polling(dp, skip_updates=False):
-    """Bot polling starter"""
-    if skip_updates:
-        await dp.skip_updates()
-    await dp.start_polling()
-
-
-async def close_all(dp):
-    """Close all connections"""
-    await dp.storage.close()
-    await dp.storage.wait_closed()
-    await dp.bot.session.close()
-
-
-async def main():
-    """Main function"""
+async def on_startup(dp: Dispatcher):
+    """Startup function"""
     init_logger()
-    logger.success("Starting bot")
-    # load config from bot.ini file
-    config = load_config("bot.ini")
+    logger.success("Starting the bot...")
 
     if config.tg_bot.use_redis:
         # use redis storage for FSM
@@ -101,11 +94,7 @@ async def main():
         # use memory storage for FSM
         storage = MemoryStorage()
 
-    # create bot instance
-    # default parse_mode is HTML
-    bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
-    # create dispatcher instance with storage
-    dp = Dispatcher(bot, storage=storage)
+    dp.storage = storage
 
     # adding config and db session to bot data
     bot['config'] = config
@@ -117,15 +106,45 @@ async def main():
 
     await set_bot_commands(bot)
 
-    # start
-    try:
-        await start_polling(dp, skip_updates=config.tg_bot.skip_updates)
-    finally:
-        await close_all(dp)
+    if config.tg_bot.use_webhook:
+        WEBHOOK_HOST = f"{config.webhook.host}:{config.webhook.port}"
+        WEBHOOK_URL = f"{WEBHOOK_HOST}/{config.webhook.path.strip('/')}"
+        webhook_info = await bot.get_webhook_info()
+
+        if webhook_info.url != WEBHOOK_URL:
+            logger.info("Setting webhook...")
+            await bot.set_webhook(WEBHOOK_URL)
+    logger.success("Bot started!")
 
 
-if __name__ == '__main__':
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        logger.warning("Bot stopped!")
+async def on_shutdown(dp: Dispatcher):
+    """Shutdown function"""
+    logger.success("Stopping the bot...")
+    if config.tg_bot.use_webhook:
+        await dp.bot.delete_webhook()
+
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    await dp.bot.session.close()
+    logger.success("Bot stopped!")
+
+if __name__ == "__main__":
+    if config.tg_bot.use_webhook:
+        logger.info("Bot is running in webhook mode")
+        start_webhook(
+            dispatcher=dp,
+            webhook_path=config.webhook.path,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown,
+            skip_updates=config.tg_bot.skip_updates,
+            host=config.webhook.webapp_host,
+            port=config.webhook.webapp_port,
+        )
+    else:
+        logger.info("Bot is running in polling mode")
+        start_polling(
+            dispatcher=dp,
+            skip_updates=config.tg_bot.skip_updates,
+            on_startup=on_startup,
+            on_shutdown=on_shutdown,
+        )

@@ -31,7 +31,7 @@ async def broadcast(message: Union[str, Message], users: list):
         await _start_broadcast(message, users)
     except Exception as e:
         logger.error(f"Error while broadcasting: {e}")
-        raise e
+        logger.exception(e)
 
 
 async def _start_broadcast(message: Union[str, Message], users: list) -> None:
