@@ -23,6 +23,7 @@ class DbMiddleware(LifetimeControllerMiddleware):
                 username=telegram_user.username,
                 lang_code=telegram_user.language_code,
             )
+            user = await TGUser.get_user(db_session=db_session, telegram_id=telegram_user.id)
 
         data['db_session'] = db_session  # add user object to data
         data['db_user'] = user  # add user object to data
