@@ -9,3 +9,4 @@ logs/
 *.ini
 *.zip
 *.log
+.DS_Store
