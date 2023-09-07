@@ -17,25 +17,24 @@ class DbMiddleware(LifetimeControllerMiddleware):
         user = await TGUser.get_user(
             db_session=db_session, telegram_id=telegram_user.id
         )
-        if not user:
-            if not telegram_user.is_bot:  # ignore bots like @Channel_Bot
-                available_langs = (
-                    await TranslationMiddleware().get_available_langs(
-                        obj, data
-                    )
+        if not user and not telegram_user.is_bot:  # ignore bots like @Channel_Bot
+            available_langs = (
+                await TranslationMiddleware().get_available_langs(
+                    obj, data
                 )
-                await TGUser.add_user(
-                    db_session=db_session,
-                    telegram_id=telegram_user.id,
-                    firstname=telegram_user.first_name,
-                    lastname=telegram_user.last_name,
-                    username=telegram_user.username,
-                    lang_code=telegram_user.language_code
-                    or available_langs[0],
-                )
-                user = await TGUser.get_user(
-                    db_session=db_session, telegram_id=telegram_user.id
-                )
+            )
+            await TGUser.add_user(
+                db_session=db_session,
+                telegram_id=telegram_user.id,
+                firstname=telegram_user.first_name,
+                lastname=telegram_user.last_name,
+                username=telegram_user.username,
+                lang_code=telegram_user.language_code
+                or available_langs[0],
+            )
+            user = await TGUser.get_user(
+                db_session=db_session, telegram_id=telegram_user.id
+            )
 
         data["db_session"] = db_session  # add user object to data
         data["db_user"] = user  # add user object to data
