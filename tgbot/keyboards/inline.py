@@ -97,11 +97,11 @@ async def generate_broadcast_buttons(data):
             buttons_texts = buttons_texts.split("\n")
             buttons_links = buttons_links.split("\n")
             if len(buttons_texts) == len(buttons_links):
-                for i in range(len(buttons_texts)):
+                for i, item in enumerate(buttons_texts):
                     buttons.append(
                         [
                             InlineKeyboardButton(
-                                buttons_texts[i], url=buttons_links[i]
+                                item, url=buttons_links[i]
                             )
                         ]
                     )
