@@ -12,13 +12,13 @@ def rate_limit(limit: int, key=None):
     Decorator for configuring rate limit and key in different functions.
     :param limit:
     :param key:
-    :return:
+    :return:F
     """
 
     def decorator(func):
-        setattr(func, 'throttling_rate_limit', limit)
+        setattr(func, "throttling_rate_limit", limit)
         if key:
-            setattr(func, 'throttling_key', key)
+            setattr(func, "throttling_key", key)
         return func
 
     return decorator
@@ -27,7 +27,7 @@ def rate_limit(limit: int, key=None):
 class ThrottlingMiddleware(BaseMiddleware):
     """Simple middleware for throttling."""
 
-    def __init__(self, limit=0.5, key_prefix='antiflood_'):
+    def __init__(self, limit=0.5, key_prefix="antiflood_"):
         self.rate_limit = limit
         self.prefix = key_prefix
         super(ThrottlingMiddleware, self).__init__()
@@ -37,8 +37,9 @@ class ThrottlingMiddleware(BaseMiddleware):
         dispatcher = Dispatcher.get_current()
         if handler:
             limit = getattr(handler, "throttling_rate_limit", self.rate_limit)
-            key = getattr(handler, "throttling_key",
-                          f"{self.prefix}_{handler.__name__}")
+            key = getattr(
+                handler, "throttling_key", f"{self.prefix}_{handler.__name__}"
+            )
         else:
             limit = self.rate_limit
             key = f"{self.prefix}_message"
@@ -48,7 +49,11 @@ class ThrottlingMiddleware(BaseMiddleware):
             await self.message_throttled(message, t, data)
             raise CancelHandler()
 
-    async def message_throttled(self, message: types.Message, throttled: Throttled, data: dict):
+    async def message_throttled(
+        self, message: types.Message, throttled: Throttled, data: dict
+    ):
         if throttled.exceeded_count <= 2:
-            texts: Map = await TranslationMiddleware().reload_translations(message, data)
+            texts: Map = await TranslationMiddleware().reload_translations(
+                message, data
+            )
             await message.reply(texts.service.antiflood)

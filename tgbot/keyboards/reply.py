@@ -7,8 +7,11 @@ async def phone_number(texts: Map):
     """Phone number inline keyboard"""
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text=texts.user.kb.reply.phone,
-                            request_contact=True)],
+            [
+                KeyboardButton(
+                    text=texts.user.kb.reply.phone, request_contact=True
+                )
+            ],
             [KeyboardButton(text=texts.user.kb.reply.close)],
         ],
         resize_keyboard=True,

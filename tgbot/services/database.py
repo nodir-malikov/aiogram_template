@@ -9,8 +9,10 @@ from tgbot.services.db_base import Base
 
 async def create_db_session(config: Config) -> AsyncSession:
     """Create DB session"""
-    auth_data = f"{config.db.user}:{config.db.password}" \
+    auth_data = (
+        f"{config.db.user}:{config.db.password}"
         f"@{config.db.host}:{config.db.port}/{config.db.database}"
+    )
 
     db_uri = f"postgresql://{auth_data}"
     if not database_exists(db_uri):
@@ -18,10 +20,7 @@ async def create_db_session(config: Config) -> AsyncSession:
         create_database(db_uri)
 
     db_uri = f"postgresql+asyncpg://{auth_data}"
-    engine = create_async_engine(
-        db_uri,
-        future=True
-    )
+    engine = create_async_engine(db_uri, future=True)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

@@ -14,6 +14,7 @@ class TgBot:
     redis_db: int
     redis_password: str
     redis_prefix: str
+    global_timeout: int = 15
 
 
 @dataclass
@@ -51,7 +52,9 @@ def cast_bool(value: str) -> bool:
 
 def load_config(path: str) -> Config:
     """Loads config from file"""
-    config = configparser.ConfigParser(interpolation=configparser.ExtendedInterpolation())
+    config = configparser.ConfigParser(
+        interpolation=configparser.ExtendedInterpolation()
+    )
     config.read(path)
 
     tg_bot = config["tg_bot"]
@@ -67,7 +70,8 @@ def load_config(path: str) -> Config:
             redis_port=tg_bot.getint("redis_port"),
             redis_db=tg_bot.getint("redis_db"),
             redis_password=tg_bot.get("redis_password"),
-            redis_prefix=tg_bot.get("redis_prefix")
+            redis_prefix=tg_bot.get("redis_prefix"),
+            global_timeout=tg_bot.getint("global_timeout"),
         ),
         webhook=WebhookConfig(**config["webhook"]),
         db=DbConfig(**config["db"]),

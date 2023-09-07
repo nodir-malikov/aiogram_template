@@ -8,29 +8,79 @@ languages: &languages
 
 en:
   service:
-    test: "Test message."
-    antiflood: "You are sending messages too fast. Wait a bit."
+    antiflood: "🤨 You are sending messages too fast. Wait a bit."
+    global_timeout: "⚠️ Please, wait {timeout} seconds."
+    year: "year"
+    month: "month"
+    week: "week"
+    day: "day"
+    hour: "hour"
+    minute: "minute"
+    second: "second"
+    years: "years"
+    months: "months"
+    weeks: "weeks"
+    days: "days"
+    hours: "hours"
+    minutes: "minutes"
+    seconds: "seconds"
   admin:
-    hi: "Hello, admin!"
-    total_users: "Total users in bot: {count}"
-    broadcast_started: "Wow! Broadcasting started."
-    broadcast_ended: "Cool! Broadcasting ended."
-    no_broadcast_text: "Please, send command like: <code>/broadcast hello my users!</code>"
+    hi: "🙋‍♂️ Hello, admin! You have commands:\n\n\
+      /stats - Statistics\n\
+      /broadcast - Broadcast"
+    total_users: "👨‍👨‍👦 Total users in bot: {count}"
+    broadcast_choose_language: "🌍 Choose language of audience for broadcast:"
+    broadcast_send_message:
+      "✅ You have chosen language of audience: <b>{lang}</b>.\n\n\
+      📨 Send message for broadcast...\n\n\
+      Text, photo, video, media with captions are supported.\n\
+      Media groups are not supported.\n\
+      Also you can forward me message from another chat and it will be \
+      forwarded to the users. (there will be 'forwarded from' sign on the top of the message)\n\
+      For forwarded messages you can't add buttons-links."
+    broadcast_not_allowed: "❗️ This type of message is not allowed for broadcast. ❌"
+    broadcast_want_button: "🤔 Do you want to add buttons-links to the message?"
+    broadcast_buttons_texts_invalid: "❗️ Buttons texts are invalid. ❌"
+    broadcast_buttons_links_invalid: "❗️ Buttons links are invalid. ❌"
+    broadcast_send_buttons_texts:
+      "⚪️ Send buttons texts for broadcast line by line...\n\
+      You can send up to 10 buttons."
+    broadcast_send_buttons_links:
+      "🔗 Send buttons links for broadcast line by line \
+      keeping the order as in your previous message..."
+    broadcast_confirm: "<b>🤓 Message for broadcast is ready!</b>\n\n\
+      🌍 Audience language is <b>{lang}</b>.\n\
+      👨‍👨‍👦 You want to send it to <b>{count}</b> users.\n\
+      ⏳ Approximate execution time: <b>{time}</b>.\n\n\
+      <b>Are you sure?</b>"
+    broadcast_preview: "🤓 This is how your broadcast will look like."
+    broadcast_started: "Wow! Broadcasting started. 🚀"
+    broadcast_ended: "Cool! Broadcasting ended. 🏁"
+    broadcast_canceled: "Broadcast canceled. ❌"
     broadcast_error: "❗️ Error while broadcasting: {err}"
+    not_in_broadcast: "❗️ You are not in broadcasting state. ❌"
+    kb:
+      inline:
+        broadcast_button_yes: "Add button ⨁"
+        broadcast_button_no: "Don't add button ⓧ"
+        broadcast_confirm: "Confirm ✅"
+        broadcast_cancel: "Cancel broadcast ❌"
   user:
-    hi: "Hello, {mention}!"
-    me: "<b>Your data in DB:</b>\n\
+    hi: "Hello, {mention}! 👋"
+    reset_state: "🔄 Your state was reset."
+    me: "ℹ️ <b>Your data in DB:</b>\n\
       Telegram ID: <code>{telegram_id}</code>\n\
       First name: <code>{firstname}</code>\n\
       Last name: <code>{lastname}</code>\n\
       Username: <code>{username}</code>\n\
       Phone: <code>{phone}</code>\n\
       Language code: <code>{lang_code}</code>"
-    lang: "Choose your language:"
-    lang_choosen: "Language choosen: {lang}"
+    lang: "🌍 Choose your language:"
+    lang_choosen: "✅ Language choosen: {lang}"
     phone: "Send your phone number by button below. 👇"
     phone_saved: "Your phone number is saved. 👌"
-    close_reply_keyboard: "Keyboard closed."
+    close_reply_keyboard: "Keyboard closed. ✔️"
+    global_timeout_trigger: "⚠️ Now you are blocked for {timeout} seconds."
     kb:
       inline:
         languages: *languages
@@ -41,28 +91,78 @@ en:
 
 ru:
   service:
-    test: "Тестовое соощение."
-    antiflood: "Вы слишком быстро отправляете сообщения. Подождите немного."
+    antiflood: "🤨 Вы слишком быстро отправляете сообщения. Подождите немного."
+    global_timeout: "⚠️ Пожалуйста, подождите {timeout} секунд."
+    year: "год"
+    month: "месяц"
+    week: "неделя"
+    day: "день"
+    hour: "час"
+    minute: "минута"
+    second: "секунда"
+    years: "года"
+    months: "месяца"
+    weeks: "недели"
+    days: "дня"
+    hours: "часа"
+    minutes: "минуты"
+    seconds: "секунды"
   admin:
-    hi: "Привет, админ!"
-    total_users: "Всего пользователей в боте: {count}"
-    broadcast_success: "Ура! Рассылка началась."
-    no_broadcast_text: "Пожалуйста, отправьте команду как: <code>/broadcast привет мои юзеры!</code>"
+    hi: "🙋‍♂️ Привет, админ! У вас есть команды:\n\n\
+      /stats - Статистика\n\
+      /broadcast - Рассылка"
+    total_users: "👨‍👨‍👦 Всего пользователей в боте: {count}"
+    broadcast_choose_language: "🌍 Выберите язык аудитории для рассылки:"
+    broadcast_send_message: "✅ Вы выбрали язык аудитории: <b>{lang}</b>.\n\n\
+      📨 Отправьте сообщение для рассылки...\n\n\
+      Поддерживаются текст, фото, видео, медиа с подписями.\n\
+      Медиа группы не поддерживаются.\n\
+      Также вы можете переслать мне сообщение из другого чата и оно будет \
+      переслано пользователям. (на верху сообщения будет надпись 'переслано от')\n\
+      Для пересланных сообщений нельзя добавлять кнопки-ссылки."
+    broadcast_not_allowed: "❗️ Этот тип сообщения не разрешен для рассылки. ❌"
+    broadcast_want_button: "🤔 Хотите ли добавить кнопки-ссылки к сообщению?"
+    broadcast_buttons_texts_invalid: "❗️ Тексты кнопок невалидны. ❌"
+    broadcast_buttons_links_invalid: "❗️ Ссылки кнопок невалидны. ❌"
+    broadcast_send_buttons_texts:
+      "⚪️ Отправьте тексты кнопок для рассылки построчно...\n\
+      Вы можете отправить до 10 кнопок."
+    broadcast_send_buttons_links:
+      "🔗 Отправьте ссылки кнопок для рассылки построчно, \
+      сохраняя порядок как в предыдущем сообщении..."
+    broadcast_confirm: "<b>🤓 Сообщение для рассылки готово!</b>\n\n\
+      🌍 Язык аудитории: <b>{lang}</b>.\n\
+      👨‍👨‍👦 Вы хотите отправить его <b>{count}</b> пользователям.\n\
+      ⏳ Примерное время выполнения: <b>{time}</b>.\n\n\
+      <b>Вы уверены?</b>"
+    broadcast_preview: "🤓 Так будет выглядеть ваша рассылка."
+    broadcast_started: "Ура! Рассылка началась. 🚀"
+    broadcast_ended: "Круто! Рассылка завершена. 🏁"
+    broadcast_canceled: "Рассылка отменена. ❌"
     broadcast_error: "❗️ Ошибка при рассылке: {err}"
+    not_in_broadcast: "❗️ Вы не в состоянии рассылки. ❌"
+    kb:
+      inline:
+        broadcast_button_yes: "Добавить кнопку ⨁"
+        broadcast_button_no: "Не добавлять кнопку ⓧ"
+        broadcast_confirm: "Подтвердить ✅"
+        broadcast_cancel: "Отменить ❌"
   user:
-    hi: "Привет, {mention}!"
-    me: "<b>Ваши данные в БД:</b>\n\
+    hi: "Привет, {mention}! 👋"
+    reset_state: "🔄 Ваше состояние было сброшено."
+    me: "ℹ️ <b>Ваши данные в БД:</b>\n\
       Telegram ID: <code>{telegram_id}</code>\n\
       Имя: <code>{firstname}</code>\n\
       Фамилия: <code>{lastname}</code>\n\
       Имя пользователя: <code>{username}</code>\n\
       Телефонный номер: <code>{phone}</code>\n\
       Код языка: <code>{lang_code}</code>"
-    lang: "Выберите ваш язык:"
-    lang_choosen: "Язык выбран: {lang}"
+    lang: "🌍 Выберите ваш язык:"
+    lang_choosen: "✅ Язык выбран: {lang}"
     phone: "Отправьте свой номер телефона по кнопке ниже. 👇"
     phone_saved: "Ваш телефонный номер сохранен. 👌"
-    close_reply_keyboard: "Клавиатура закрыта."
+    close_reply_keyboard: "Клавиатура закрыта. ✔️"
+    global_timeout_trigger: "⚠️ Теперь вы заблокированы на {timeout} секунд."
     kb:
       inline:
         languages: *languages
