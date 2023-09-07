@@ -270,7 +270,7 @@ async def admin_broadcast_confirm(
     await broadcast(
         broadcast_message,
         receivers,
-        is_forward=True if broadcast_message.is_forward() else False,
+        is_forward=bool(broadcast_message.is_forward()),
     )
 
     await clear_state_data_startswith(state, "broadcast")
