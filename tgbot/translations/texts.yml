@@ -61,8 +61,8 @@ en:
     not_in_broadcast: "❗️ You are not in broadcasting state. ❌"
     kb:
       inline:
-        broadcast_button_yes: "Add button ⨁"
-        broadcast_button_no: "Don't add button ⓧ"
+        broadcast_button_yes: "Add button ➕"
+        broadcast_button_no: "Don't add button 🙅‍♂️"
         broadcast_confirm: "Confirm ✅"
         broadcast_cancel: "Cancel broadcast ❌"
   user:
@@ -143,8 +143,8 @@ ru:
     not_in_broadcast: "❗️ Вы не в состоянии рассылки. ❌"
     kb:
       inline:
-        broadcast_button_yes: "Добавить кнопку ⨁"
-        broadcast_button_no: "Не добавлять кнопку ⓧ"
+        broadcast_button_yes: "Добавить кнопку ➕"
+        broadcast_button_no: "Не добавлять кнопку 🙅‍♂️"
         broadcast_confirm: "Подтвердить ✅"
         broadcast_cancel: "Отменить ❌"
   user:
