@@ -256,13 +256,15 @@ async def admin_broadcast_confirm(
     if isinstance(broadcast_message, dict):
         broadcast_message = Message.to_object(broadcast_message)
 
-    if not broadcast_message.is_forward():
-        if data.get("broadcast_want_buttons"):
-            broadcast_message.reply_markup = (
-                inline.InlineKeyboardMarkup().to_object(
-                    data.get("broadcast_buttons_json")
-                )
+    if (
+        not broadcast_message.is_forward()
+        and data.get("broadcast_want_buttons")
+    ):
+        broadcast_message.reply_markup = (
+            inline.InlineKeyboardMarkup().to_object(
+                data.get("broadcast_buttons_json")
             )
+        )
 
     logger.info(
         f"Admin {cb.from_user.id} started broadcast:\nMessage: {broadcast_message.to_python()}"
