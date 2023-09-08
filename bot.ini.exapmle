@@ -1,5 +1,4 @@
 [tg_bot]
-# @aiogram_template_bot
 token = 1231231312313:AAAAAA-BBB-CCCC
 skip_updates = True
 admins_id = 432699372, 00000000
@@ -10,6 +9,7 @@ redis_port = 6379
 redis_db = 0
 redis_password =
 redis_prefix = aiogram_template_bot_fsm
+global_timeout = 15
 
 [webhook]
 host = https://123-2-54-3-aaa.eu.ngrok.io
